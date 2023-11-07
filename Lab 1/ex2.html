@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Form for aud in x factor</h1>
+    <br />
+
+    <label for="name">Name</label>
+    <input type="text" id="name" placeholder="Enter your name" />
+    <br />
+    <label for="musicalName">Musical name</label>
+    <input type="text" id="musicalName" placeholder="Enter your musical name" />
+    <br />
+    <span> Sex</span>
+    <input type="radio" name="sex" id="maleSex" value="male" />
+    <label> Male </label>
+    <input type="radio" name="sex" id="femaleSex" value="female" />
+    <label> Female </label>
+    <br />
+    <label for="genre">Genre</label>
+
+    <select name="genre" id="genre">
+      <option value="rock">Rock</option>
+      <option value="pop">Pop</option>
+      <option value="jazz">Jazz</option>
+      <option value="rap">Rap</option>
+    </select>
+
+    <br />
+    <br />
+    <br />
+
+    <button id="submit">Submit</button>
+
+    <br />
+    <br />
+
+    <div id="result"></div>
+
+    <script>
+      const submit = document.getElementById('submit');
+      const name = document.getElementById('name');
+      const musicalName = document.getElementById('musicalName');
+      const maleSex = document.getElementById('maleSex');
+      const femaleSex = document.getElementById('femaleSex');
+      const genre = document.getElementById('genre');
+      const result = document.getElementById('result');
+
+      submit.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        let sex = '';
+        if (maleSex.checked) {
+          sex = 'Male';
+        } else if (femaleSex.checked) {
+          sex = 'Female';
+        }
+
+        if (!name.value || !musicalName.value || !genre.value || !sex) {
+          result.innerHTML = 'All fields are required';
+          return;
+        }
+        result.innerHTML = name.value + ', ' + sex + ', ' + genre.value + ' - successfully audited';
+      });
+    </script>
+  </body>
+</html>

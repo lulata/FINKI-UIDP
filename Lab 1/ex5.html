@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.1.js"
+      integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+      crossorigin="anonymous"></script>
+
+    <style>
+      .btn-container {
+        display: flex;
+        justify-content: space-evenly;
+      }
+
+      .main {
+        max-width: 400px;
+        background: rgb(106, 144, 215);
+        padding: 10px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <h2>Font size</h2>
+      <div class="btn-container">
+        <button id="start">Default</button>
+        <button id="increase">Larger</button>
+        <button id="lower">Smaller</button>
+      </div>
+    </div>
+
+    <div id="content">
+      <h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque, et?</h1>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab architecto at consequuntur culpa dolor numquam quo
+        saepe veritatis? Animi atque eum ex explicabo laborum nemo nisi numquam possimus saepe ullam. Blanditiis,
+        commodi consectetur debitis deserunt eaque esse expedita ipsa iure laborum, nobis numquam obcaecati odio quas
+        quia quisquam sapiente, tenetur ullam velit! Aliquid, asperiores blanditiis, consequatur cumque delectus ea
+        eligendi harum illo neque nihil non numquam officia placeat quae quidem tempore voluptatem. Asperiores
+        dignissimos dolorum ipsam, numquam praesentium recusandae repudiandae?
+      </p>
+    </div>
+
+    <script>
+      let startSize = {
+        header: $('#content h1').css('fontSize'),
+        paragraph: $('#content p').css('fontSize'),
+      };
+
+      function animateContent(func) {
+        $('#content h1').animate(
+          {
+            fontSize: func($('#content h1').css('fontSize'), 1.3),
+          },
+          500
+        );
+        $('#content p').animate(
+          {
+            fontSize: func($('#content p').css('fontSize'), 1.3),
+          },
+          500
+        );
+      }
+
+      function toNumberAndMultiply(string, multiplyBy) {
+        return parseInt(string) * multiplyBy + 'px';
+      }
+
+      function toNumberAndDivide(string, devideBy) {
+        return parseInt(string) / devideBy + 'px';
+      }
+
+      $(document).ready(() => {
+        $('#start').click(() => {
+          $('#content h1').animate(
+            {
+              fontSize: startSize.header,
+            },
+            500
+          );
+          $('#content p').animate(
+            {
+              fontSize: startSize.paragraph,
+            },
+            500
+          );
+        });
+
+        $('#increase').click(() => {
+          animateContent(toNumberAndMultiply);
+        });
+
+        $('#lower').click(() => {
+          animateContent(toNumberAndDivide);
+        });
+      });
+    </script>
+  </body>
+</html>

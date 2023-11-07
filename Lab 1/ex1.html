@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    Time till end of the lab: <span id="time"></span>
+
+    <script>
+      var countDownDate = new Date('Nov 15, 2023 23:59:00').getTime();
+      let currentTime = new Date().getTime();
+
+      let finalTime = '';
+
+      setInterval(() => {
+        currentTime = new Date().getTime();
+        var distance = countDownDate - currentTime;
+
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        finalTime = days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's ';
+
+        document.getElementById('time').innerHTML = finalTime;
+      }, 1000);
+    </script>
+  </body>
+</html>
