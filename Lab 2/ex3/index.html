@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Recommendation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <button class="add-book">Add Book</button>
+    </div>
+    <div id="container">
+
+    </div>
+
+
+    <div id="popup" class="popup-overlay">
+        <div class="popup-container">
+            <span id="close-popup">X</span>
+            Add a Book
+            <input type="text" id="naslov" placeholder="naslov">
+            <input type="text" id="avtor" placeholder="avtor">
+            <textarea name="" id="komentar" cols="30" rows="10" placeholder="komentar"></textarea>
+            <button id="submit-book">submit</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
