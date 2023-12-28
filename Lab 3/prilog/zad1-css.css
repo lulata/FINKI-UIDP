@@ -1,0 +1,44 @@
+#content_container {
+	width: 490px;
+	height: 450px;
+}
+.live_tile {
+	
+	color: white;
+	background:  linear-gradient(#1E5799, #7db9e8);
+	width: 100px;
+	height: 100px;
+	margin: 5px;
+	border: 2px solid #000;
+	text-align: center;
+	vertical-align: middle;
+	display: inline-block;
+	font-size: 30px;
+}
+
+.live_tile_hover{
+	background:  linear-gradient(#669900, #666633);
+}
+
+.passed {
+	width: 100px;
+	height: 100px;
+	background: grey;
+	cursor: auto;
+	color: white;
+	margin: 5px;
+	border: 2px solid #000;
+	text-align: center;
+	vertical-align: middle;
+	display: inline-block;
+	font-size: 30px;
+}
+
+span {
+	display: inline-block;
+	font-size: 20px;
+	margin-top:20px;
+}
+p {
+	margin-top: 30px;
+}

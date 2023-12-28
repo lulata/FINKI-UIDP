@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LAB4 2</title>
+    <link type="text/css" href="jquery/jquery-ui.css"rel="stylesheet" />
+    <script src="jquery/jquery.js"></script>
+    <script src="jquery/jquery-ui.js"></script>
+	
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script><link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#date").datepicker({
+                defaultDate: new Date(),
+
+                beforeShowDay: function(date) {
+                    var disabled = true,
+                            numOfDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+                    if (numOfDays % 2 == 0)
+                        disabled = (date.getDate() % 2 != 0)
+                    else disabled = (date.getDate() % 2 == 0)
+                    return [disabled, ""]
+                }
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+<label>Date: </label> <input id="date"><br />
+</body>
+
+</html>
+
+
+

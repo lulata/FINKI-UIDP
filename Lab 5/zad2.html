@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Info Form</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <style type="text/css">
+      body {
+        font-family: 'Arial', sans-serif;
+        margin: 20px;
+        background-color: #f5f5f5;
+      }
+      #myForm {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 16px;
+        box-sizing: border-box;
+      }
+      #hobbies {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 6px solid transparent;
+        border-color: #fff transparent transparent transparent;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        overflow-y: scroll;
+      }
+
+      #hobbies::-webkit-scrollbar {
+        display: none;
+      }
+      #hobbies option {
+        border: 1px solid #ccc;
+        padding: 8px;
+        margin-bottom: 3px;
+      }
+
+      #hobbies option:selected {
+        background-color: orange;
+        color: #fff;
+      }
+
+      #info-dialog {
+        display: none;
+      }
+      #dialog-content {
+        padding: 20px;
+        font-size: 16px;
+      }
+    </style>
+    <script type="text/javascript">
+      function showSelectedItems() {
+        var selectedItems = [];
+        $('#listBox1 option:selected').each(function () {
+          selectedItems.push($(this).text());
+        });
+
+        if (selectedItems.length > 0) {
+          alert(selectedItems.join('\n'));
+        } else {
+          alert('No items selected.');
+        }
+      }
+      $(function () {
+        $('#dateOfBirth').datepicker();
+
+        $('#myForm').submit(function (event) {
+          event.preventDefault();
+
+          var isValid = true;
+          $('input, select').each(function () {
+            if ($(this).val() === '') {
+              isValid = false;
+              return false; // Break out of the loop if any field is empty
+            }
+          });
+
+          // If the form is valid, display the information in a dialog
+          if (isValid) {
+            var hobbies = $('#hobbies').val();
+            var hobbiesText = hobbies ? hobbies.join(', ') : 'None';
+
+            var infoText =
+              '<p>Name: ' +
+              $('#name').val() +
+              '</p>' +
+              '<p>Surname: ' +
+              $('#surname').val() +
+              '</p>' +
+              '<p>Date of Birth: ' +
+              $('#dateOfBirth').val() +
+              '</p>' +
+              '<p>Hobbies: ' +
+              hobbiesText +
+              '</p>';
+
+            $('#dialog-content').html(infoText);
+
+            // Open the dialog
+            $('#info-dialog').dialog({
+              modal: true,
+              width: 400,
+              buttons: {
+                Ok: function () {
+                  $(this).dialog('close');
+                },
+              },
+            });
+          } else {
+            alert('Please fill in all fields.');
+          }
+        });
+
+        // Add event listener to change color when option is selected
+        $('#hobbies').change(function () {
+          $('#hobbies option:selected').css({
+            'background-color': 'orange',
+            color: '#fff',
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <form id="myForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" placeholder="Name..." />
+
+      <label for="surname">Surname:</label>
+      <input type="text" id="surname" placeholder="Surname..." />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" placeholder="Password" />
+
+      <label for="dateOfBirth">Date of Birth:</label>
+      <input type="text" id="dateOfBirth" placeholder="Date of birth" />
+
+      <label for="hobbies">Hobbies:</label>
+      <select id="hobbies" multiple size="8">
+        <option value="gaming">Gaming</option>
+        <option value="sports">Sports</option>
+        <option value="watchingTV">Watching TV</option>
+        <option value="sleeping">Sleeping</option>
+        <option value="hiking">Hiking</option>
+        <option value="skiing">Skiing</option>
+        <option value="dancing">Dancing</option>
+      </select>
+
+      <button type="submit">Add my Info</button>
+    </form>
+
+    <div id="info-dialog" title="My Info">
+      <div id="dialog-content"></div>
+    </div>
+  </body>
+</html>

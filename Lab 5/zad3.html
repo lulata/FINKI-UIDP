@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <title></title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <style type="text/css">
+      #items {
+        width: 150px;
+        height: 150px;
+        border: 1px solid black;
+        padding: 10px;
+        margin-bottom: 10px;
+        overflow: auto;
+      }
+
+      #selected {
+        width: 150px;
+        height: 150px;
+        border: 1px solid black;
+        padding: 10px;
+        margin-bottom: 10px;
+        overflow: auto;
+      }
+
+      .ui-selected {
+        background: lawngreen;
+        color: white;
+      }
+    </style>
+
+    <script type="text/javascript"></script>
+  </head>
+  <body>
+    <!-- Да се направи веб страницата прикажана на Слика 7. Страницата содржи листа (selectable) во која -->
+    <!-- ќе може да се додаваат нови ставки и да се бришат селектираните ставки. Над листата треба да се -->
+    <!-- прикажуваат моментално селектираните ставки. -->
+    <label for="items">New item:</label>
+    <br />
+
+    <input type="text" id="newItem" />
+    <br />
+    <br />
+    <button id="add">Add</button>
+    <button id="remove">Delete selected items</button>
+    <br />
+
+    <div class="selected-items">
+      <p>Selected items</p>
+      <div id="selected"></div>
+    </div>
+    <br />
+
+    <ul id="items"></ul>
+
+    <script>
+      $(function () {
+        $('#items').selectable();
+
+        $('#add').click(function () {
+          var item = $('#newItem').val();
+          $('#items').append("<li class='ui-widget-content'>" + item + '</li>');
+          $('#newItem').val('');
+        });
+
+        $('#remove').click(function () {
+          $('#selected').html('');
+          $('.ui-selected').removeClass('ui-selected');
+        });
+
+        $('#items').on('selectableselected', function (event, ui) {
+          var selected = $('#selected').html();
+          $('#selected').html(selected + '<br />' + ui.selected.innerHTML);
+        });
+
+        $('#items').on('selectableunselected', function (event, ui) {
+          var selected = $('#selected').html();
+          var toRemove = '<br />' + ui.unselected.innerHTML;
+          $('#selected').html(selected.replace(toRemove, ''));
+          $(ui.selected).addClass('ui-selected');
+        });
+      });
+    </script>
+  </body>
+</html>
