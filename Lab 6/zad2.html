@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script>
+      var emailSet = null;
+      var favorites = [];
+      $(document).ready(function () {
+        $('#search_interface').show();
+        $('#share_interface').hide();
+        $('#error').hide();
+        $('#network').text('');
+        var emailDialog = $('#email_insert').dialog({
+          autoOpen: false,
+          height: 400,
+          width: 350,
+          modal: true,
+          buttons: {
+            Submit: function () {
+              var emailEntered = $('#ins_email').val();
+              var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+              if (regex.test(emailEntered)) {
+                emailSet = emailEntered;
+                emailDialog.dialog('close');
+                $('#email').text(emailSet);
+              } else {
+                $('#error').show();
+              }
+            },
+          },
+        });
+        var shareDialog = $('.share_dialog').dialog({
+          autoOpen: false,
+          height: 400,
+          width: 350,
+          modal: true,
+          buttons: {
+            Share: function () {},
+            Cancel: function () {
+              shareDialog.dialog('close');
+            },
+          },
+        });
+        $('#share_dialog_call').click(function () {
+          shareDialog.dialog('open');
+          $('#network').text($('#selectable .ui-selected').attr('class').split(' ')[0]);
+          $('#favepics').html(favorites.join('<br/>'));
+        });
+        $('#search_button').click(function () {
+          $('#search_interface').show();
+          $('#share_interface').hide();
+          $('.results,#fave').show();
+        });
+        $('#share_button').click(function () {
+          $('#search_interface').hide();
+          $('#share_interface').show();
+          if (emailSet == null) {
+            emailDialog.dialog('open');
+          }
+          $('.results,#fave').hide();
+        });
+        $('#search').click(function () {
+          getPhotos();
+        });
+        $('#selectable').selectable();
+        $('#results_list').selectable();
+        $('#fave').click(function () {
+          favorites.push($('#results_list .ui-selected').attr('title'));
+          $('#results_list .ui-selected').removeClass().detach().appendTo('#favorites_list');
+        });
+        $('#favorites_list').selectable();
+        $('#unfave').click(function () {
+          $('#favorites_list .ui-selected').detach();
+        });
+      });
+      function getPhotos() {
+        $('#items').html("<img src='animate.gif' style='display:block;width:15px;'/>");
+        console.log($('#searchTerm').val());
+        $.ajax({
+          url:
+            'http://www.flickr.com/services/feeds/photos_public.gne?tags=' + $('#searchTerm').val() + '&format=json#',
+          dataType: 'jsonp',
+          jsonp: 'jsoncallback',
+          success: function (data) {
+            $('#results_list').html('');
+            console.log(data.items);
+            $.each(data.items, function (i, item) {
+              var img = $('<img/>');
+              img.attr('width', '200px');
+              img.attr('height', '150px');
+              img.attr('title', item.title);
+              img.attr('src', item.media.m.replace('_m.jpg', '_s.jpg')).appendTo('#results_list');
+            });
+          },
+          error: function (e) {
+            alert('Error: ' + e.responseText);
+          },
+        });
+      }
+    </script>
+    <title>Flicker Search Engine</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="nav_container">
+        <div class="global_navigation">
+          <span class="global_nav_button" id="search_button">Search Engine</span>
+          <span class="global_nav_button" id="share_button">Share</span>
+        </div>
+
+        <span id="search_interface">
+          <h1>Flickr Search</h1>
+          <input type="text" id="searchTerm" />
+          <button id="search">Search</button>
+        </span>
+        <span id="share_interface">
+          <h1>Share Favorites</h1>
+          <div class="the_icons">
+            <ul class="social" id="selectable">
+              <li class="delicious ui-widget-content">
+                <a href="#"></a>
+              </li>
+              <li class="digg ui-widget-content">
+                <a href="#"></a>
+              </li>
+              <li class="facebook ui-widget-content">
+                <a href="#"></a>
+              </li>
+              <li class="flickr ui-widget-content">
+                <a href="#"></a>
+              </li>
+              <li class="linkedin ui-widget-content">
+                <a href="#"></a>
+              </li>
+              <li class="reddit ui-widget-content">
+                <a href="#"></a>
+              </li>
+              <li class="rss ui-widget-content">
+                <a href="#"></a>
+              </li>
+            </ul>
+          </div>
+          <button id="share_dialog_call">SHARE</button>
+        </span>
+      </div>
+    </div>
+    <div class="result_container">
+      <div class="results">
+        <h2>Search results:</h2>
+        <div class="results_list connect" id="results_list"></div>
+      </div>
+      <button id="fave">Fave</button><br />
+      <button id="unfave">Unfave</button>
+      <div class="favorites">
+        <h2>Favorites:</h2>
+        <ul class="favorites_list connect" id="favorites_list"></ul>
+      </div>
+    </div>
+
+    <div id="email_insert" title="Insert your email">
+      <span id="error"
+        ><b
+          >Invalid email!<br />
+          eg. pero@doma.mk</b
+        ></span
+      ><br />
+      <span>Email: </span><br />
+      <input type="text" id="ins_email" />
+    </div>
+
+    <div class="share_dialog" title="Sharing options">
+      E-mail: <span id="email"></span><br />
+      Selected Network: <span id="network"></span><br />
+      Faves:
+      <div id="favepics"></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Прва задача</title>
+    <link
+      rel="stylesheet"
+      href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script>
+      var setpass = null;
+      $(document).ready(function () {
+        var password = $('#password');
+        var repeatpassword = $('#repeatpassword');
+
+        var to = $('#to');
+        var subject = $('#subject');
+        var cc = $('#cc');
+        var content = $('#content');
+
+        var toL = $('#toL');
+        var subjectL = $('#subjectL');
+        var ccL = $('#ccL');
+
+        function updateTips(t) {
+          $('.validateTips').text(t).addClass('ui-state-highlight');
+          setTimeout(function () {
+            $('.validateTips').removeClass('ui-state-highlight', 1500);
+          }, 500);
+        }
+        function setPassword() {
+          var valid = true;
+          $([]).add(password).add(repeatpassword).removeClass('ui-state-error');
+          // Check length, if long enough, check if same, if same check special characters
+          if (password.val().length < 6) {
+            password.addClass('ui-state-error');
+            updateTips('Length of password must be above 6 characters');
+            return false;
+          } else if (password.val() !== repeatpassword.val()) {
+            repeatpassword.addClass('ui-state-error');
+            updateTips('Passwords must match');
+            return false;
+          } else if (/^[a-zA-Z0-9- ]*$/.test(password.val()) == true) {
+            password.addClass('ui-state-error');
+            updateTips('Password must contain special characters');
+            return false;
+          }
+
+          if (valid) {
+            setpass = password.val();
+            setPassDialog.dialog('close');
+          }
+          return valid;
+        }
+        setPassDialog = $('#set-form').dialog({
+          dialogClass: 'no-close',
+          autoOpen: true,
+          height: 350,
+          width: 350,
+          modal: true,
+          buttons: {
+            OK: setPassword,
+          },
+        });
+        insertMessage = $('#message-form').dialog({
+          dialogClass: 'no-close',
+          autoOpen: false,
+          height: 400,
+          width: 350,
+          modal: true,
+          buttons: {
+            Insert: function () {
+              $('.contentL').text(content.val());
+              content.val('');
+              insertMessage.dialog('close');
+            },
+            Clear: function () {
+              content.val('');
+            },
+          },
+        });
+        confirmPassDialog = $('#confirm-form').dialog({
+          dialogClass: 'no-close',
+          autoOpen: false,
+          height: 400,
+          width: 350,
+          modal: true,
+          buttons: {
+            Ok: function () {
+              if ($('#passconfirm').val() === setpass) {
+                confirmPassDialog.dialog('close');
+              } else {
+                updateTips("Password doesn't match!");
+              }
+            },
+          },
+        });
+
+        $('#insert2').click(function () {
+          updateTips('');
+          insertMessage.dialog('open');
+          toL.text(to.val());
+          subjectL.text(subject.val());
+          ccL.text(cc.val());
+        });
+        $('#send').click(function () {
+          updateTips('');
+          confirmPassDialog.dialog('open');
+        });
+      });
+    </script>
+    <style>
+      * {
+        font-family: Verdana;
+      }
+      h1 {
+        margin-top: 0px !important;
+      }
+      input {
+        display: block;
+        margin-bottom: 10px;
+      }
+      .content {
+        width: 100%;
+        height: auto;
+        min-height: 100px;
+        display: block;
+        margin-bottom: 10px;
+        background: #a9f5bc;
+      }
+      .container {
+        width: 400px;
+        height: 400px;
+        padding: 20px;
+        /*overflow: scroll;*/
+      }
+      .navbar,
+      .buttons {
+        width: 400px;
+        padding: 20px;
+        background: #a9d0f5;
+      }
+      .buttons {
+        text-align: center;
+      }
+      .buttons button {
+        width: 180px !important;
+      }
+      #sent_items {
+        height: 100%;
+        /*overflow: scroll;*/
+      }
+      .nav {
+        /*position: relative;*/
+        vertical-align: top;
+        width: auto;
+        height: 40px;
+        padding: 8px;
+        font-size: 22px;
+        color: white;
+        text-align: center;
+        margin-right: 10px !important;
+        background: #0174df;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        border: 0;
+        border-bottom: 2px solid #e2b607;
+        -webkit-box-shadow: inset 0 -2px #e2b607;
+        box-shadow: inset 0 -2px #e2b607;
+      }
+      .button {
+        position: relative;
+        vertical-align: top;
+        width: auto;
+        height: 40px;
+        padding: 8px;
+        font-size: 22px;
+        color: white;
+        text-align: center;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        background: #f1c40f;
+        border: 0;
+        border-bottom: 2px solid #e2b607;
+        cursor: pointer;
+        -webkit-box-shadow: inset 0 -2px #e2b607;
+        box-shadow: inset 0 -2px #e2b607;
+      }
+      #send {
+        background: #64cb42;
+        border-bottom: 2px solid #045fb4;
+        -webkit-box-shadow: inset 0 -2px #45862f;
+        box-shadow: inset 0 -2px #45862f;
+      }
+      .dialog {
+        padding: 5px !important;
+        min-width: 330px !important;
+      }
+      #contentL {
+        min-height: 100px;
+        width: 290px !important;
+        max-width: 290px !important;
+        margin: 5px;
+      }
+      #error,
+      #error2 {
+        color: red;
+        display: none;
+        margin-bottom: 5px !important;
+      }
+
+      #sent,
+      #email,
+      #done {
+        border-bottom: 2px solid #045fb4;
+        -webkit-box-shadow: inset 0 -2px #045fb4;
+        box-shadow: inset 0 -2px #045fb4;
+        margin-right: 10px;
+      }
+
+      #done_end {
+        text-align: center;
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="set-form" title="Set Password">
+      <p class="validateTips">All form fields are required.</p>
+
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
+      <label for="repeatpassword">Repeat Password</label>
+      <input
+        type="password"
+        name="repeatpassword"
+        id="repeatpassword"
+        value=""
+        class="text ui-widget-content ui-corner-all" />
+    </div>
+    <div id="message-form" title="Set Password">
+      <p class="validateTips"></p>
+      To: <span id="toL"></span><br />
+      Subject: <span id="subjectL"></span><br />
+      Cc: <span id="ccL"></span><br />
+      <label for="content">Content: </label>
+      <textarea
+        rows="4"
+        cols="50"
+        name="content"
+        id="content"
+        value=""
+        class="text ui-widget-content ui-corner-all"></textarea>
+    </div>
+    <div id="confirm-form" title="Set Password">
+      <p class="validateTips"></p>
+      <label for="passconfirm">Content: </label>
+      <input
+        type="password"
+        name="passconfirm"
+        id="passconfirm"
+        value=""
+        class="text ui-widget-content ui-corner-all" />
+    </div>
+    <div class="container">
+      <div class="wizard_tab" id="compose_message">
+        <h1><b>New message:</b></h1>
+        <span>To:</span> <input type="text" name="to" id="to" /> <span>Cc:</span>
+        <input type="text" name="cc" id="cc" /> <span>Subject:</span> <input type="text" name="subject" id="subject" />
+        <span>Content:</span><span class="contentL"></span>
+        <button class="button" id="insert2">Insert</button>
+        <button class="button" id="send">Send</button>
+      </div>
+    </div>
+  </body>
+</html>
